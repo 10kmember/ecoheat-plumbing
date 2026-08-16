@@ -589,7 +589,9 @@
   }
 
   window.addEventListener("keydown", function (ev) {
-    if (ev.key === "Escape" && started) {
+    // Only while the yard itself has focus, so Escape elsewhere on the page
+    // (closing the chat, for instance) does not also stop the simulation.
+    if (ev.key === "Escape" && started && document.activeElement === canvas) {
       pause(); started = false;
       section.classList.remove("is-playing");
       if (startBtn) startBtn.removeAttribute("hidden");

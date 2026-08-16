@@ -188,8 +188,7 @@ def footer(r: str) -> str:
         '<footer class="footer"><div class="wrap">'
         '<div class="footer__grid">'
         '<div class="footer__brand">'
-        '<img src="{r}assets/img/ecoheat-logo.png" width="460" height="374" '
-        'alt="{name} logo">'
+        '<p class="footer__name">{name}</p>'
         "<p>Plumbing, heating and renewable energy across Somerset and "
         "North Somerset.</p>"
         '<p><a href="{fb}" rel="noopener">Follow us on Facebook</a></p>'
@@ -204,14 +203,16 @@ def footer(r: str) -> str:
         "<ul>{hours}</ul></div>"
         "</div>"
         '<div class="footer__legal">'
-        "<p>{legal} trading as {name}. Registered in England &amp; Wales, "
+        "<p>{legal} trading as {name} (Epar). Registered in England &amp; Wales, "
         "company number {cno}. Registered office: {office}. "
         "Gas Safe register number {gs}.</p>"
         '<p><a href="{r}legal/privacy-policy/">Privacy policy</a> · '
         '<a href="{r}legal/terms-of-service/">Terms of service</a> · '
-        '<a href="{r}legal/cookie-policy/">Cookie policy</a> · '
-        '<a href="{r}sitemap.xml">Sitemap</a></p>'
+        '<a href="{r}legal/cookie-policy/">Cookie policy</a></p>'
         "<p>&copy; {year} {legal}. All rights reserved.</p>"
+        '<p class="footer__credit">Site designed and built by '
+        '<a href="https://princey.netlify.app" rel="noopener noreferrer">'
+        "father</a>.</p>"
         "</div></div></footer>"
     ).format(
         r=r, name=e(C.BUSINESS["name"]), legal=e(C.BUSINESS["legal_name"]),
@@ -472,7 +473,9 @@ def page(path, title, meta, body, trail=None, schema=None, priority="0.6",
 {body}
 </main>
 {footer}
+<div class="ras" id="ras" data-root="{r}"></div>
 <script src="{r}assets/js/site.js" defer></script>
+<script src="{r}assets/js/ras.js" defer></script>
 <script src="{r}assets/js/motion.js" defer></script>
 {gl}</body>
 </html>
@@ -547,7 +550,7 @@ quotes the job is the engineer who does it.</p>
 <div>
 <p>The Boiler Upgrade Scheme pays {grant} towards an air source heat pump on
 eligible properties. We apply on your behalf and take it straight off your
-quote &mdash; you never fund it yourself and claim it back.</p>
+quote, so you never fund it yourself and claim it back.</p>
 <p>Everything starts with a room-by-room heat loss survey, because that is what
 decides whether a heat pump will heat your home cheaply. Free, and yours to keep
 either way.</p>
@@ -613,7 +616,7 @@ Reset</button>
 <p class="visually-hidden" role="status" data-yard-live></p>
 <p class="yard__note">A toy, but an honest one: every crate has a mass, so the
 heavy stock barely moves and the light stock goes flying. Same arithmetic we use
-to size a heat pump &mdash; just with worse consequences.</p>
+to size a heat pump, just with worse consequences.</p>
 </div></section>
 
 <section class="section" id="contact"><div class="wrap">
@@ -668,7 +671,7 @@ def build_services_index():
 <span class="eyebrow">Services</span>
 <h1>Plumbing, heating and renewable energy services</h1>
 <p class="lede">Everything EcoHeat does, from a leaking tap in Burnham-on-Sea to
-a full air source heat pump conversion in Taunton — carried out by Gas Safe
+a full air source heat pump conversion in Taunton, carried out by Gas Safe
 registered engineers and quoted at a fixed price before we start.</p>
 </div></div>
 
@@ -734,7 +737,7 @@ def build_service(s):
             '<div class="plans" style="margin-top:2rem">{}</div>'
             '<p class="form__note" style="margin-top:1.5rem">Plans run for 12 '
             "months and renew only with your agreement. Cancel any time with 30 "
-            "days' notice — no exit fee. Full terms are in our "
+            "days' notice; no exit fee. Full terms are in our "
             '<a href="../../legal/terms-of-service/">terms of service</a>.</p>'
             "</div></section>"
         ).format(plan_cards())
@@ -842,7 +845,7 @@ your behalf, and take the grant off your quote.</p>
 towards a ground source heat pump. It is a grant, not a loan: there is nothing
 to repay.</p>
 <p>Crucially, the money is claimed by the installer, not the householder. That
-means you never have to find {grant} up front and wait to be reimbursed — it is
+means you never have to find {grant} up front and wait to be reimbursed, it is
 deducted from your quotation, and you pay the balance.</p>
 
 <h2>Who is eligible</h2>
@@ -851,7 +854,7 @@ deducted from your quotation, and you pay the balance.</p>
 <li>It is a domestic property in England or Wales.</li>
 <li>It has a valid Energy Performance Certificate with no outstanding
 recommendations for loft or cavity wall insulation.</li>
-<li>You are replacing a fossil fuel system — mains gas, oil, LPG or electric
+<li>You are replacing a fossil fuel system: mains gas, oil, LPG or electric
 heating.</li>
 <li>The property is not a new build (with limited exceptions for self-builds).</li>
 <li>The installation is carried out to MCS standards by an MCS-certified
@@ -870,7 +873,7 @@ the design flow temperature and the emitter schedule.</li>
 <li><strong>Quotation.</strong> Fixed price, itemised, with the {grant} already
 deducted.</li>
 <li><strong>Voucher application.</strong> We apply to Ofgem and you confirm the
-application by email — this is the only step that needs you.</li>
+application by email, this is the only step that needs you.</li>
 <li><strong>Installation and commissioning.</strong> Certified to MCS standards
 and registered on the MCS database.</li>
 <li><strong>Redemption.</strong> We redeem the voucher. You have already had the
@@ -884,11 +887,11 @@ benefit, so nothing further is due from you.</li>
 <p>The Boiler Upgrade Scheme is the main one, but depending on your
 circumstances you may also be eligible for:</p>
 <ul>
-<li><strong>ECO4</strong> — support for households on qualifying benefits or in
+<li><strong>ECO4</strong>: support for households on qualifying benefits or in
 low-EPC properties, delivered through energy suppliers.</li>
-<li><strong>Great British Insulation Scheme</strong> — insulation measures that
+<li><strong>Great British Insulation Scheme</strong>: insulation measures that
 can also bring an EPC up to the standard the heat pump grant requires.</li>
-<li><strong>0% VAT</strong> — heat pumps, solar thermal and related energy
+<li><strong>0% VAT</strong>: heat pumps, solar thermal and related energy
 saving materials currently attract zero-rated VAT on installation in domestic
 properties.</li>
 </ul>
@@ -899,7 +902,7 @@ on qualifying installations.</p>
 {pic}
 <div class="callout" style="margin-top:1.5rem"><h3>Free eligibility check</h3>
 <p>Send us your postcode and we will look up your EPC and tell you where you
-stand — no visit required, no obligation.</p>
+stand, no visit required, no obligation.</p>
 <p><a class="btn btn--primary" href="../contact/?enquiry=heat-pump">Check my eligibility</a></p>
 </div>
 <div class="callout callout--amber"><h3>Grant rules change</h3>
@@ -952,8 +955,8 @@ agreed before any work starts.</p>
 <div class="grid grid-2" style="gap:3rem;align-items:start">
 <div class="prose">
 <h2>What we offer</h2>
-<p>Finance is available on qualifying installations — typically boiler
-replacements, heat pump installations and full bathroom refits — through an
+<p>Finance is available on qualifying installations (typically boiler
+replacements, heat pump installations and full bathroom refits) through an
 FCA-authorised finance provider. Depending on the value of the work and the term
 you choose, options normally include:</p>
 <div class="table-scroll">
@@ -989,7 +992,7 @@ after you have confirmed you are happy with the work.</li>
 <h2>Finance and the heat pump grant</h2>
 <p>The two work together. The <a href="../grants/">{grant} Boiler Upgrade Scheme
 grant</a> is deducted from the quotation first, and finance is arranged on the
-balance — so you are only ever financing what you actually have to pay.</p>
+balance, so you are only ever financing what you actually have to pay.</p>
 
 <h2>Before you commit</h2>
 <p>Credit is not right for everyone. Borrowing over a long term costs more
@@ -1072,7 +1075,7 @@ def build_projects():
 <span class="eyebrow">Our work</span>
 <h1>Projects and case studies</h1>
 <p class="lede">Installations we have carried out across Somerset and North
-Somerset, written up honestly — including the problems we found along the way and
+Somerset, written up honestly, including the problems we found along the way and
 how they were solved.</p>
 </div></div>
 {blocks}
@@ -1089,7 +1092,7 @@ Photographs are published only with the customer's permission.</p>
 
     page("projects/index.html",
          "Projects & Case Studies | EcoHeat Somerset",
-         "Real EcoHeat installations across Somerset — oil to heat pump "
+         "Real EcoHeat installations across Somerset, oil to heat pump "
          "conversions, back boiler removals and bathroom refits, with the "
          "challenge, the fix and the outcome.",
          body, trail=[("Projects", "projects/")], priority="0.8")
@@ -1112,8 +1115,8 @@ def build_reviews():
 <div class="callout"><h3>Reviews are published here as they come in</h3>
 <p>EcoHeat is a young company and we would rather show you nothing than show you
 testimonials we have written ourselves. Genuine reviews from customers appear on
-our Facebook page today, and will be published here — with the customer's
-permission — as they are received.</p>
+our Facebook page today, and will be published here, with the customer's
+permission, as they are received.</p>
 <p><a class="btn btn--primary" href="{fb}" rel="noopener">Read reviews on Facebook</a></p>
 </div>""".format(fb=e(C.BUSINESS["facebook"]))
 
@@ -1135,7 +1138,7 @@ Somerset.</p>
 <div>
 <h2>Leave us a review</h2>
 <p>If we have worked for you, a few lines makes a real difference to a small
-local firm — and it helps the next person in your village decide who to trust
+local firm; and it helps the next person in your village decide who to trust
 with their heating.</p>
 <p>You can review us on our
 <a href="{fb}" rel="noopener">Facebook page</a>. We never offer incentives in
@@ -1172,7 +1175,7 @@ def build_about():
 <span class="eyebrow">About us</span>
 <h1>About EcoHeat Plumbing and Renewables</h1>
 <p class="lede">A small, independent Somerset firm doing plumbing, heating and
-renewables properly — with the same engineer from first phone call to final
+renewables properly, with the same engineer from first phone call to final
 handover.</p>
 </div></div>
 
@@ -1190,7 +1193,7 @@ will be standing in your airing cupboard.</p>
 
 <h2>What we believe about heating</h2>
 <p>Two things, mainly. First, that most heating systems in Somerset are running
-badly rather than broken — wrong flow temperature, no balancing, an oversized
+badly rather than broken: wrong flow temperature, no balancing, an oversized
 boiler short-cycling itself to death. Fixing that is usually cheaper than
 replacing anything.</p>
 <p>Second, that renewables only work when they are designed. A heat pump sized
@@ -1208,7 +1211,7 @@ company is registered in England and Wales, number
 <h2>How we price</h2>
 <p>Surveys are free. Quotations are fixed, written and itemised, and valid for
 30 days. On installations we take a deposit that covers materials, with the
-balance due on completion and commissioning — never before the system is
+balance due on completion and commissioning, never before the system is
 finished and working. If we find something genuinely hidden once we start, we
 stop, explain it and re-quote rather than adding it to the invoice.</p>
 </div>
@@ -1294,7 +1297,7 @@ def build_areas():
 <span class="eyebrow">Coverage</span>
 <h1>Areas we cover across Somerset and North Somerset</h1>
 <p class="lede">We are based at Edingworth, between Weston-super-Mare and
-Burnham-on-Sea, and work across Somerset and North Somerset — roughly a 30 mile
+Burnham-on-Sea, and work across Somerset and North Somerset, roughly a 30 mile
 radius, with the M5 corridor covered daily.</p>
 </div></div>
 
@@ -1305,7 +1308,7 @@ radius, with the M5 corridor covered daily.</p>
 <ul class="areas-list">{areas}</ul>
 <p style="margin-top:1.5rem">Not on the list? Ring <a href="tel:{tel}">{phone}</a>
 and ask. We would rather give you a straight no than quote for a job we cannot
-service properly afterwards — an annual boiler service is not much use if the
+service properly afterwards: an annual boiler service is not much use if the
 engineer is an hour and a half away.</p>
 </div>
 <div>
@@ -1375,7 +1378,7 @@ def build_faq():
 <div class="pagehead"><div class="wrap narrow">
 <span class="eyebrow">Help</span>
 <h1>Frequently asked questions</h1>
-<p class="lede">Straight answers to what customers in Somerset actually ask us —
+<p class="lede">Straight answers to what customers in Somerset actually ask us
 about grants, boilers, bathrooms, service plans and how we charge.</p>
 <ul class="ticks" style="margin-top:1.5rem;columns:2 220px">{toc}</ul>
 </div></div>
@@ -1407,7 +1410,7 @@ def build_contact():
 <span class="eyebrow">Contact</span>
 <h1>Contact EcoHeat Plumbing and Renewables</h1>
 <p class="lede">Call for anything urgent. For quotes and surveys, the form below
-reaches the same engineers — we aim to reply the same working day.</p>
+reaches the same engineers, we aim to reply the same working day.</p>
 </div></div>
 
 <section class="section"><div class="wrap">
@@ -1499,7 +1502,7 @@ call centre.</p>
 <div class="card" style="margin-bottom:1.25rem">
 <div class="card__icon">{ch}</div>
 <h3><a href="https://wa.me/{wa}" rel="noopener">WhatsApp</a></h3>
-<p>Send a photo of the boiler, the leak or the error code — it often saves a
+<p>Send a photo of the boiler, the leak or the error code, it often saves a
 visit.</p>
 </div>
 
@@ -1540,7 +1543,7 @@ call us.</p>
     page("contact/index.html",
          "Contact EcoHeat | Plumbers in Weston-super-Mare | 01934 440290",
          "Contact EcoHeat Plumbing and Renewables for a free survey or a quote. "
-         "Call 01934 440290, email us or send an enquiry — Somerset and North "
+         "Call 01934 440290, email us or send an enquiry. Somerset and North "
          "Somerset covered.",
          body, trail=[("Contact", "contact/")], schema=schema, priority="0.9")
 
@@ -1604,15 +1607,15 @@ def build_privacy():
             "<p>We collect only what we need to answer your enquiry and carry "
             "out work you ask us to do:</p>",
             "<ul>"
-            "<li><strong>Contact details</strong> — your name, telephone "
+            "<li><strong>Contact details</strong>: your name, telephone "
             "number, email address and the postcode or address of the "
             "property.</li>"
-            "<li><strong>Enquiry details</strong> — what you tell us about the "
+            "<li><strong>Enquiry details</strong>: what you tell us about the "
             "job, including any photographs you send us.</li>"
-            "<li><strong>Job records</strong> — surveys, quotations, "
+            "<li><strong>Job records</strong>: surveys, quotations, "
             "certificates, invoices and service history for work we carry "
             "out.</li>"
-            "<li><strong>Correspondence</strong> — emails, WhatsApp messages "
+            "<li><strong>Correspondence</strong>: emails, WhatsApp messages "
             "and notes of telephone calls.</li>"
             "</ul>",
             "<p>We do not collect special category data, and we do not ask for "
@@ -1640,10 +1643,10 @@ def build_privacy():
             "<td>Legal obligation (Art. 6(1)(c))</td></tr>"
             "<tr><td>Send service reminders to existing customers</td>"
             "<td>So your warranty is not invalidated by a missed service</td>"
-            "<td>Legitimate interests (Art. 6(1)(f)) — you can opt out at any "
+            "<td>Legitimate interests (Art. 6(1)(f)), you can opt out at any "
             "time</td></tr>"
             "<tr><td>Publish a photograph or review of your job</td>"
-            "<td>To show our work</td><td>Consent (Art. 6(1)(a)) — we ask "
+            "<td>To show our work</td><td>Consent (Art. 6(1)(a)), we ask "
             "first, and you can withdraw it</td></tr>"
             "</tbody></table></div>",
             "<p>We do not send marketing email or SMS to people who have "
@@ -1655,33 +1658,33 @@ def build_privacy():
             "<p>Beyond that, we share personal data only where it is necessary:"
             "</p>",
             "<ul>"
-            "<li><strong>Gas Safe Register and Building Control</strong> — "
+            "<li><strong>Gas Safe Register and Building Control</strong>: "
             "notification of notifiable gas work, as required by law.</li>"
-            "<li><strong>Manufacturers</strong> — to register your warranty in "
+            "<li><strong>Manufacturers</strong>: to register your warranty in "
             "your name.</li>"
-            "<li><strong>Ofgem and MCS</strong> — where we apply for a Boiler "
+            "<li><strong>Ofgem and MCS</strong>: where we apply for a Boiler "
             "Upgrade Scheme voucher on your behalf, and to register the "
             "installation.</li>"
-            "<li><strong>Our MCS-accredited installation partner</strong> — "
+            "<li><strong>Our MCS-accredited installation partner</strong>: "
             "where a heat pump installation is certified through them.</li>"
-            "<li><strong>Finance providers</strong> — only if you ask us to "
+            "<li><strong>Finance providers</strong>: only if you ask us to "
             "arrange finance, and only with your knowledge.</li>"
-            "<li><strong>Our accountant and IT providers</strong> — under "
+            "<li><strong>Our accountant and IT providers</strong>: under "
             "confidentiality obligations.</li>"
-            "<li><strong>Insurers and legal advisers</strong> — if a claim or "
+            "<li><strong>Insurers and legal advisers</strong>: if a claim or "
             "dispute arises.</li>"
             "</ul>",
         ]),
         ("How long we keep it", [
             "<ul>"
-            "<li><strong>Enquiries that do not become jobs</strong> — deleted "
+            "<li><strong>Enquiries that do not become jobs</strong>: deleted "
             "within 24 months.</li>"
-            "<li><strong>Job and installation records</strong> — kept for the "
+            "<li><strong>Job and installation records</strong>: kept for the "
             "life of the installation plus 6 years, because gas safety records, "
             "warranty claims and liability all depend on them.</li>"
-            "<li><strong>Accounting records</strong> — 6 years plus the current "
+            "<li><strong>Accounting records</strong>: 6 years plus the current "
             "financial year, as required by HMRC.</li>"
-            "<li><strong>Gas safety certificates</strong> — at least 2 years, "
+            "<li><strong>Gas safety certificates</strong>: at least 2 years, "
             "and normally for the life of the appliance record.</li>"
             "</ul>",
         ]),
@@ -1758,8 +1761,8 @@ def build_cookies():
             "read.</p>",
         ]),
         ("Server logs", [
-            "<p>Our hosting provider keeps standard access logs — IP address, "
-            "timestamp, page requested and browser type — for security and to "
+            "<p>Our hosting provider keeps standard access logs (IP address, "
+            "timestamp, page requested and browser type) for security and to "
             "keep the site running. These are ordinary server logs, not "
             "cookies, and they are not used to build a profile of you.</p>",
         ]),
@@ -1801,8 +1804,8 @@ def build_terms():
             "on the quotation itself.</p>",
             "<p>A fixed price covers the work described in the quotation. If we "
             "encounter something that could not reasonably have been "
-            "identified at survey — concealed asbestos, a failed component "
-            "found once panels are removed, non-compliant existing pipework — "
+            "identified at survey (concealed asbestos, a failed component "
+            "found once panels are removed, or non-compliant existing pipework), "
             "we will stop, explain the position and provide a revised price for "
             "your approval before continuing. You are never charged for "
             "additional work you have not agreed to in writing.</p>",
@@ -1821,7 +1824,7 @@ def build_terms():
         ]),
         ("Your right to cancel", [
             "<p>Where you enter into a contract with us away from our business "
-            "premises — which covers most surveys carried out at your home — "
+            "premises, which covers most surveys carried out at your home, "
             "you have the right under the Consumer Contracts (Information, "
             "Cancellation and Additional Charges) Regulations 2013 to cancel "
             "within <strong>14 days</strong> without giving a reason.</p>",
@@ -1830,7 +1833,7 @@ def build_terms():
             "before the 14 days expire. We will refund any deposit within 14 "
             "days of being told.</p>".format(m=e(b["email"])),
             "<p>If you ask us in writing to begin work inside the 14-day "
-            "cancellation period — as customers with no heating usually do — "
+            "cancellation period, as customers with no heating usually do, "
             "and you then cancel, we may charge for the work already carried "
             "out and materials already supplied, in proportion to what has been "
             "done.</p>",
@@ -1892,7 +1895,7 @@ def build_terms():
             "Applications are subject to status and affordability checks.</p>",
         ]),
         ("Complaints", [
-            "<p>If something is not right, tell us first — most problems are "
+            "<p>If something is not right, tell us first; most problems are "
             "solved with a phone call. Contact us on "
             '<a href="tel:{t}">{p}</a> or at <a href="mailto:{m}">{m}</a>.</p>'
             .format(t=b["phone_e164"], p=e(b["phone"]), m=e(b["email"])),
@@ -1908,7 +1911,7 @@ def build_terms():
             "breaking this contract or failing to use reasonable care and "
             "skill.</p>",
             "<p>We do not limit our liability in any way where it would be "
-            "unlawful to do so — including for death or personal injury caused "
+            "unlawful to do so, including for death or personal injury caused "
             "by our negligence, for fraud, or for any breach of your statutory "
             "rights. We are not liable for losses that were not foreseeable, or "
             "for business losses, as our services are supplied for domestic and "
@@ -1936,7 +1939,7 @@ def build_terms():
         "payment, your 14-day right to cancel, guarantees, service plans, "
         "grants, complaints and liability.",
         "Terms of service",
-        "The terms on which we quote, carry out work and run service plans — "
+        "The terms on which we quote, carry out work and run service plans, "
         "including your right to cancel and how to complain.",
         sections, priority="0.3")
 
@@ -1951,8 +1954,8 @@ def build_404():
 <section class="section"><div class="wrap">
 <h2>Popular pages</h2>
 <div class="grid grid-3" style="margin-top:1.5rem">{cards}</div>
-<p style="margin-top:2rem">Or just ring us on <a href="tel:{tel}">{phone}</a> —
-usually quicker than clicking about.</p>
+<p style="margin-top:2rem">Or just ring us on <a href="tel:{tel}">{phone}</a>.
+Usually quicker than clicking about.</p>
 </div></section>
 """.format(
         cards="".join(

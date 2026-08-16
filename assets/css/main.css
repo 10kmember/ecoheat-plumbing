@@ -696,3 +696,135 @@ kbd { font: inherit; font-size: .82em; background: rgba(255, 255, 255, .1);
 /* Utility classes set display, which outranks the user agent's [hidden] rule.
    Without this the Start button stays on screen after the yard begins. */
 [hidden] { display: none !important; }
+
+/* ---------- footer wordmark and credit ---------- */
+
+.footer__name {
+  font-family: var(--display); font-size: 2rem; line-height: .9;
+  color: var(--lime); margin-bottom: .6rem;
+}
+.footer__credit { margin-top: .75rem; color: var(--text-invert-soft); }
+.footer__credit a { text-decoration: underline; }
+
+/* =========================================================================
+   Ras, the site assistant
+   ========================================================================= */
+
+.ras { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 130; }
+
+.ras__launch {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--lime); color: var(--ink); border: 0;
+  font: inherit; font-weight: 800; cursor: pointer;
+  padding: .55rem 1.1rem .55rem .55rem; border-radius: 999px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+.ras__launch:hover { background: var(--lime-bright); }
+
+.ras__avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex: none;
+  background: var(--ink); color: var(--lime);
+  /* Nunito, not Amatic: a single hand-drawn capital in a 34px circle is
+     too light to read as a mark. */
+  font-family: var(--sans); font-weight: 800; font-size: 1.05rem;
+  line-height: 34px; text-align: center;
+}
+.ras__head .ras__avatar { background: var(--ink-3); }
+
+.ras__panel {
+  position: absolute; right: 0; bottom: calc(100% + .65rem);
+  width: min(380px, calc(100vw - 2.5rem));
+  height: min(560px, calc(100vh - 8rem));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--ink-2); color: var(--text-invert);
+  border: 1px solid rgba(143, 220, 60, .3);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+}
+
+.ras__head {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .8rem .9rem; border-bottom: 1px solid rgba(255, 255, 255, .12);
+  background: var(--ink);
+}
+.ras__head b { display: block; font-weight: 800; font-size: .98rem; }
+.ras__head span { font-size: .78rem; color: var(--text-invert-soft); }
+.ras__close {
+  margin-left: auto; background: transparent; border: 0; cursor: pointer;
+  color: var(--text-invert-soft); padding: .35rem; border-radius: 4px;
+}
+.ras__close:hover { color: var(--paper); background: rgba(255, 255, 255, .08); }
+.ras__close svg { width: 18px; height: 18px; }
+
+.ras__log {
+  flex: 1; overflow-y: auto; padding: 1rem .9rem;
+  display: flex; flex-direction: column; gap: .7rem;
+  scroll-behavior: smooth;
+}
+.ras__msg {
+  max-width: 88%; padding: .65rem .85rem; border-radius: 12px;
+  font-size: .92rem; line-height: 1.5;
+}
+.ras__msg--ras {
+  align-self: flex-start; background: var(--ink-3); color: var(--text-invert);
+  border-bottom-left-radius: 3px;
+}
+.ras__msg--ras a { color: var(--lime-bright); }
+.ras__msg--you {
+  align-self: flex-end; background: var(--lime); color: var(--ink);
+  font-weight: 600; border-bottom-right-radius: 3px;
+}
+
+.ras__typing { display: flex; gap: 5px; align-items: center; min-height: 2.1rem; }
+.ras__typing span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--lime);
+  animation: rasBlink 1.2s infinite ease-in-out;
+}
+.ras__typing span:nth-child(2) { animation-delay: .18s; }
+.ras__typing span:nth-child(3) { animation-delay: .36s; }
+@keyframes rasBlink {
+  0%, 60%, 100% { opacity: .25; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ras__typing span { animation: none; opacity: .7; }
+}
+
+.ras__chips {
+  display: flex; gap: .4rem; overflow-x: auto; padding: 0 .9rem .7rem;
+  scrollbar-width: thin;
+}
+.ras__chip {
+  flex: none; font: inherit; font-size: .8rem; cursor: pointer;
+  background: transparent; color: var(--text-invert);
+  border: 1px solid rgba(143, 220, 60, .45); border-radius: 999px;
+  padding: .35rem .75rem; white-space: nowrap;
+}
+.ras__chip:hover { background: rgba(143, 220, 60, .16); }
+
+.ras__form {
+  display: flex; gap: .5rem; padding: .75rem .9rem;
+  border-top: 1px solid rgba(255, 255, 255, .12); background: var(--ink);
+}
+.ras__form input {
+  flex: 1; font: inherit; font-size: .92rem; padding: .6rem .75rem;
+  border-radius: 999px; border: 1px solid rgba(255, 255, 255, .2);
+  background: var(--ink-2); color: var(--paper);
+}
+.ras__form input::placeholder { color: var(--text-invert-soft); }
+.ras__form button {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; border: 0;
+  background: var(--lime); color: var(--ink); cursor: pointer;
+  display: grid; place-items: center;
+}
+.ras__form button:hover { background: var(--lime-bright); }
+.ras__form button svg { width: 18px; height: 18px; }
+
+@media (max-width: 480px) {
+  .ras { right: .75rem; bottom: .75rem; }
+  .ras__launch-label { display: none; }
+  .ras__launch { padding: .45rem; }
+  .ras__panel { width: calc(100vw - 1.5rem); height: min(72vh, 540px); }
+}
+
+@media print { .ras { display: none; } }

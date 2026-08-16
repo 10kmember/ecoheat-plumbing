@@ -97,8 +97,8 @@ SERVICES = [
         ),
         "body": [
             ("What we install",
-             "Gas, LPG and oil boilers from the mainstream manufacturers "
-             "— combination, system and conventional. We size the boiler to "
+             "Gas, LPG and oil boilers from the mainstream manufacturers: "
+             "combination, system and conventional. We size the boiler to "
              "the property using a room-by-room heat loss calculation rather "
              "than replacing like for like, because an oversized boiler "
              "cycles, wastes fuel and wears out early."),
@@ -112,7 +112,7 @@ SERVICES = [
              "Manufacturer warranties run from 5 to 12 years depending on the "
              "boiler and the controls fitted. We tell you at quote stage "
              "exactly which warranty applies and what you have to do to keep "
-             "it valid — normally an annual service on time, every year."),
+             "it valid: normally an annual service on time, every year."),
         ],
         "bullets": [
             "Combi, system and conventional boiler swaps",
@@ -235,8 +235,8 @@ SERVICES = [
         "h1": "Plumbing and bathroom installation",
         "title": "Plumber Weston-super-Mare & Taunton | Bathroom Fitting",
         "meta": (
-            "General plumbing and full bathroom installations across Somerset "
-            "— taps, showers, cylinders, underfloor heating and bathroom "
+            "General plumbing and full bathroom installations across Somerset: "
+            "taps, showers, cylinders, underfloor heating and bathroom "
             "fit-outs by one team from strip-out to snagging."
         ),
         "summary": (
@@ -245,7 +245,7 @@ SERVICES = [
         ),
         "icon": "tap",
         "intro": (
-            "The small jobs matter as much as the big ones — they are how most "
+            "The small jobs matter as much as the big ones; they are how most "
             "customers meet us. We turn up when we said we would, protect the "
             "floors, and clear up before we leave."
         ),
@@ -259,7 +259,7 @@ SERVICES = [
              "Full bathrooms, en-suites, shower rooms and accessible "
              "wet rooms. We handle strip-out, first fix, tiling, second fix, "
              "electrics through our qualified partner and the final snagging "
-             "list — one point of contact rather than four trades to chase."),
+             "list, one point of contact rather than four trades to chase."),
             ("Cylinders and underfloor heating",
              "Unvented cylinder installation and servicing to G3, vented "
              "cylinder replacement, and wet underfloor heating for extensions "
@@ -284,10 +284,10 @@ SERVICES = [
         "meta": (
             "Emergency plumber covering Weston-super-Mare, Taunton and "
             "surrounding Somerset. Burst pipes, leaks, no hot water and boiler "
-            "breakdowns — call 01934 440290."
+            "breakdowns. Call 01934 440290."
         ),
         "summary": (
-            "Burst pipes, leaks, no heating and no hot water — same-day where "
+            "Burst pipes, leaks, no heating and no hot water: same-day where "
             "we can get to you."
         ),
         "icon": "alert",
@@ -351,7 +351,7 @@ SERVICES = [
              "Every plan can be paid monthly by Direct Debit or annually in "
              "one payment. Annual payment saves the equivalent of one monthly "
              "instalment. Plans run for twelve months, renew only with your "
-             "agreement, and carry no exit fee — cancel with 30 days' notice "
+             "agreement, and carry no exit fee: cancel with 30 days' notice "
              "and you pay for the cover you have used."),
             ("What every plan includes",
              "A full annual service to manufacturer specification with a "
@@ -455,15 +455,15 @@ FAQ_GROUPS = [
          "How much is the heat pump grant and do I have to claim it back?",
          "The Boiler Upgrade Scheme pays {grant} towards an air source heat "
          "pump on eligible properties in England and Wales. You never pay it "
-         "out and claim it back — we apply on your behalf and the grant is "
+         "out and claim it back: we apply on your behalf and the grant is "
          "deducted from your quote, so you only ever pay the balance."
          .format(grant=BUS_GRANT)),
         ("heat-pump-eligible",
          "Which properties are eligible for the Boiler Upgrade Scheme?",
          "Domestic properties in England and Wales with a valid EPC that has "
          "no outstanding loft or cavity wall insulation recommendations. The "
-         "property must be replacing a fossil fuel system — gas, oil, LPG or "
-         "electric — and new build properties are generally excluded. We check "
+         "property must be replacing a fossil fuel system (gas, oil, LPG or "
+         "electric), and new build properties are generally excluded. We check "
          "your EPC before quoting and tell you where you stand."),
         ("heat-pump-cost",
          "What does an air source heat pump cost to install?",
@@ -500,16 +500,16 @@ FAQ_GROUPS = [
          "not be left without hot water overnight without being told first."),
         ("boiler-brands",
          "Which boiler brands do you fit?",
-         "We fit the mainstream manufacturers — Worcester Bosch, Vaillant, "
-         "Ideal, Baxi and Viessmann among others — and we are not tied to any "
+         "We fit the mainstream manufacturers (Worcester Bosch, Vaillant, "
+         "Ideal, Baxi and Viessmann among others) and we are not tied to any "
          "one of them. That means we can recommend on the merits of the "
          "appliance and the warranty rather than on a supplier target."),
         ("fixed-price",
          "Is the quote a fixed price?",
          "Yes. Once we have surveyed the property the written quote is the "
          "price you pay. The only thing that changes it is you asking for "
-         "additional work, or something genuinely hidden — an asbestos flue "
-         "seal, for instance — in which case we stop, explain and re-quote "
+         "additional work, or something genuinely hidden (an asbestos flue "
+         "seal, for instance), in which case we stop, explain and re-quote "
          "before carrying on."),
         ("pressure-loss",
          "Why does my boiler keep losing pressure?",
@@ -520,8 +520,8 @@ FAQ_GROUPS = [
          "visit and neither should be topped up and ignored."),
         ("service-frequency",
          "How often does a boiler need servicing?",
-         "Every twelve months, and manufacturers make it a warranty condition "
-         "— miss a service and a 10-year warranty can be void when you need "
+         "Every twelve months, and manufacturers make it a warranty condition: "
+         "miss a service and a 10-year warranty can be void when you need "
          "it. Our service plans include a reminder before the anniversary "
          "date for exactly this reason."),
         ("cp12",
@@ -541,13 +541,13 @@ FAQ_GROUPS = [
         ("bathroom-supply",
          "Can I supply my own bathroom suite?",
          "Yes, and plenty of customers do. We will check what you have chosen "
-         "before you order it — the most common problem is a shower or tap "
+         "before you order it: the most common problem is a shower or tap "
          "that the property's water pressure cannot run properly, which is far "
          "cheaper to catch before delivery than after tiling."),
         ("stop-tap",
          "Where is my stop tap and why does it matter?",
          "Most commonly under the kitchen sink, sometimes in a downstairs "
-         "cloakroom or under the stairs. Find it now and check it turns — in a "
+         "cloakroom or under the stairs. Find it now and check it turns: in a "
          "burst, the thirty seconds it takes to shut the water off is the "
          "difference between a wet floor and a replacement ceiling."),
     ]),
@@ -574,7 +574,7 @@ FAQ_GROUPS = [
          "Can I cancel a service plan?",
          "Yes. Plans run for twelve months and renew only with your agreement. "
          "Cancel at any time with 30 days' notice and you pay only for the "
-         "cover you have used — there is no exit fee."),
+         "cover you have used; there is no exit fee."),
         ("plan-parts",
          "Are parts included in a service plan?",
          "On the Essential and Renewables plans, parts and repair labour are "
@@ -584,7 +584,7 @@ FAQ_GROUPS = [
         ("areas",
          "Which areas do you cover?",
          "We are based at Edingworth between Weston-super-Mare and "
-         "Burnham-on-Sea, and cover Somerset and North Somerset — including "
+         "Burnham-on-Sea, and cover Somerset and North Somerset, including "
          "Taunton, Bridgwater, Cheddar, Wells, Clevedon and Nailsea. If you "
          "are just outside, ring and ask; we will give you a straight yes or "
          "no rather than quote and cancel."),
@@ -598,7 +598,7 @@ FAQ_GROUPS = [
          "How do I pay and do you take a deposit?",
          "Bank transfer, card or cash. On installations we take a deposit to "
          "cover materials, with the balance due on completion and "
-         "commissioning — never before the job is finished and working."),
+         "commissioning, never before the job is finished and working."),
     ]),
 ]
 
@@ -633,7 +633,7 @@ def _resolve_mcs_answer():
 MCS_ANSWER = _resolve_mcs_answer()
 
 MCS_BADGE = (
-    "MCS certified — reg. {num}".format(num=MCS_NUMBER) if MCS_STATUS == "own"
+    "MCS certified, reg. {num}".format(num=MCS_NUMBER) if MCS_STATUS == "own"
     else "Heat pumps installed with our MCS-accredited partner"
 )
 
@@ -693,7 +693,7 @@ CASE_STUDIES = [
         ),
         "challenge": (
             "Removing a back boiler means taking out the fireplace unit, "
-            "sealing the chimney and re-routing gas and water — a job that is "
+            "sealing the chimney and re-routing gas and water, a job that is "
             "routinely under-quoted as a straight swap."
         ),
         "solution": (

@@ -52,6 +52,7 @@ The build fails, and CI with it, on any of:
 | `assets/js/physics.js` | "The yard". A 2D rigid-body engine written for this page — semi-implicit Euler under gravity, circle/circle, circle/box and SAT box/box contacts, sequential impulses with restitution and Coulomb friction, Baumgarte position correction, fixed 120 Hz timestep. Drive the van, click to blast. |
 | `assets/js/audio.js` | Web Audio. An ambient drone (three detuned oscillators under an LFO-swept lowpass) plus impact and boost cues, synthesised live — no audio files. Impacts are panned by where they landed and voiced by how hard. |
 | `assets/js/motion.js` | Scroll reveals, scroll progress rail, pointer-tracked highlights, magnetic buttons, count-up figures. |
+| `assets/js/ras.js` | Ras, the site assistant. A keyword-scored intent table with several written replies per topic, picked at random and never repeating the previous one, behind a pause scaled to the length of the answer. No network call and no model: everything it can say is in the file. |
 | `assets/js/site.js` | Contact form enhancement only. |
 | `tools/make_glass_maps.py` | Bakes the displacement maps behind the glass refraction. |
 
@@ -66,6 +67,17 @@ Every one of them is opt-out by construction:
   stack at rest with no Start button.
 - **Audio** never initialises until the visitor presses the sound button, which
   is also what browsers require.
+- **Ras** never appears without JavaScript, states plainly that it is scripted
+  when asked, and quotes no prices: anything that depends on a survey or a
+  commercial decision is handed to the phone number or the relevant page.
+
+### Editing what Ras knows
+
+`KNOWLEDGE` in `assets/js/ras.js` is a list of topics. Each has keywords with a
+weight (3 is decisive, 1 supporting) and an array of replies. Add a reply to an
+array and it joins the rotation; add a topic and it competes for matches. A
+message scoring under 2 falls through to `FALLBACK`, which admits it does not
+know rather than guessing.
 
 ## Structure
 
@@ -278,6 +290,8 @@ less negative tracking than a grotesque would be, or it disappears on the page.
 
 **Colour.** Sampled from the supplied logo rather than chosen independently:
 charcoal `#141414`–`#222222` with lime `#9FEC5A`.
+
+**Voice.** No em dashes anywhere in the site copy.
 
 | Token | Value | Use |
 | --- | --- | --- |
