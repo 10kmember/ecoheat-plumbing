@@ -1,7 +1,26 @@
 /* EcoHeat Plumbing and Renewables
    Brand system sampled from the company logo: charcoal #141414-#222222 with
    lime #9FEC5A. Amber is reserved exclusively for emergency/urgency cues so it
-   keeps its signal value. */
+   keeps its signal value.
+
+   Amatic SC carries all display type, Nunito everything else. Both are
+   self-hosted (latin subset, ~66KB total) so the site still makes no external
+   requests and sets no third-party cookies. */
+
+@font-face {
+  font-family: "Amatic SC";
+  src: url("../fonts/amatic-sc-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/nunito-var.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --ink: #14171a;
@@ -32,8 +51,8 @@
   --shadow: 0 1px 2px rgba(20, 23, 26, .06), 0 8px 24px rgba(20, 23, 26, .06);
   --shadow-lg: 0 2px 4px rgba(20, 23, 26, .08), 0 18px 48px rgba(20, 23, 26, .12);
 
-  --sans: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  --display: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --sans: "Nunito", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --display: "Amatic SC", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -56,16 +75,16 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--display);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -.02em;
+  font-weight: 700;
+  line-height: .94;
+  letter-spacing: .005em;
   color: var(--ink);
-  margin: 0 0 .5em;
+  margin: 0 0 .35em;
 }
-h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); }
-h2 { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.15rem); }
-h3 { font-size: clamp(1.15rem, 1.05rem + .5vw, 1.4rem); }
-h4 { font-size: 1.0625rem; }
+h1 { font-size: clamp(3.4rem, 2.2rem + 5.4vw, 7rem); }
+h2 { font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4.1rem); }
+h3 { font-size: clamp(1.6rem, 1.4rem + .8vw, 2.1rem); }
+h4 { font-size: clamp(1.35rem, 1.25rem + .4vw, 1.6rem); letter-spacing: .01em; }
 
 p { margin: 0 0 1.1em; }
 p:last-child, ul:last-child, ol:last-child { margin-bottom: 0; }
@@ -108,25 +127,6 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   font-weight: 700;
 }
 .skip-link:focus { left: 0; }
-
-/* ---------- emergency strip ---------- */
-
-.topbar {
-  background: var(--ink);
-  color: var(--text-invert-soft);
-  font-size: .8125rem;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-}
-.topbar .wrap {
-  display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
-  align-items: center; justify-content: space-between;
-  min-height: 40px; padding-top: .35rem; padding-bottom: .35rem;
-}
-.topbar a { color: var(--text-invert); text-decoration: none; font-weight: 600; }
-.topbar a:hover { color: var(--lime-bright); text-decoration: underline; }
-.topbar__creds { display: flex; flex-wrap: wrap; gap: .35rem 1.25rem; align-items: center; }
-.topbar__cred { display: inline-flex; align-items: center; gap: .4rem; }
-.topbar__cred svg { width: 14px; height: 14px; flex: none; color: var(--lime); }
 
 /* ---------- header ---------- */
 
@@ -280,17 +280,6 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 }
 .hero .eyebrow, .section--ink .eyebrow { color: var(--lime); }
 
-/* ---------- trust bar ---------- */
-
-.trustbar { background: var(--surface); border-bottom: 1px solid var(--line); }
-.trustbar ul {
-  list-style: none; margin: 0; padding: 1.1rem 0; display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .85rem 1.5rem;
-}
-.trustbar li { display: flex; gap: .6rem; align-items: center; font-size: .9rem; font-weight: 600; }
-.trustbar svg { width: 22px; height: 22px; color: var(--lime-dark); flex: none; }
-.trustbar span { color: var(--text-soft); font-weight: 400; display: block; font-size: .82rem; }
-
 /* ---------- cards ---------- */
 
 .card {
@@ -395,7 +384,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 .plan__price .per { font-size: .9rem; color: var(--text-soft); font-weight: 600; }
 .plan__price .alt { display: block; font-size: .88rem; color: var(--text-soft); margin-top: .45rem; }
 .plan__price .tbc { font-family: var(--display); font-size: 1.35rem; font-weight: 800; color: var(--ink); }
-.plan h4 { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-soft); margin: 0 0 .7rem; }
+.plan h4 { color: var(--text-soft); margin: 0 0 .5rem; }
 .plan .ticks { margin-bottom: 1.35rem; font-size: .93rem; }
 .plan .btn { margin-top: auto; }
 
@@ -472,29 +461,238 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 .footer__legal p { margin-bottom: .5rem; }
 .footer__legal a { text-decoration: underline; }
 
-/* ---------- floating call button (mobile) ---------- */
-
-.callbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-  display: grid; grid-template-columns: 1fr 1fr;
-  background: var(--ink-2); border-top: 1px solid rgba(255, 255, 255, .15);
-}
-.callbar a {
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-  padding: .95rem .5rem; font-weight: 800; text-decoration: none; font-size: .95rem;
-}
-.callbar a:first-child { background: var(--lime); color: var(--ink); }
-.callbar a:last-child { color: var(--paper); }
-.callbar svg { width: 18px; height: 18px; }
-@media (min-width: 1180px) { .callbar { display: none; } }
-@media (max-width: 1179px) { body { padding-bottom: 56px; } }
-
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; margin: -1px;
   padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
 @media print {
-  .header, .topbar, .callbar, .nav, .footer { display: none; }
+  .header, .nav, .footer, .progress, .yard { display: none; }
   body { font-size: 11pt; }
 }
+
+/* =========================================================================
+   Liquid glass and motion
+   =========================================================================
+   The glass surfaces below refract what is behind them for real: an SVG
+   <feDisplacementMap> in the page offsets the backdrop per pixel using a
+   pre-baked map, so content genuinely bends at the rim rather than just
+   blurring. Browsers that cannot apply an SVG filter to a backdrop fall back
+   to the plain blur declared immediately above each one -- same look, minus
+   the bending.
+   ========================================================================= */
+
+/* ---------- scroll progress ---------- */
+
+.progress {
+  position: fixed; inset: 0 0 auto; height: 3px; z-index: 120;
+  pointer-events: none; background: rgba(255, 255, 255, .06);
+}
+.progress__bar {
+  height: 100%; transform: scaleX(0); transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--lime-dark), var(--lime), var(--lime-bright));
+  will-change: transform;
+}
+
+/* ---------- hero canvas ---------- */
+
+.hero__canvas { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero__canvas canvas {
+  width: 100%; height: 100%; display: block;
+  opacity: 0; transition: opacity 1.1s ease;
+}
+.hero__canvas canvas.is-live { opacity: 1; }
+/* Keeps the headline column at full contrast over whatever the shader does. */
+.hero__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(100deg, var(--ink) 0%, rgba(20, 23, 26, .90) 26%,
+                    rgba(20, 23, 26, .38) 44%, transparent 62%),
+    linear-gradient(to top, rgba(20, 23, 26, .5), transparent 45%);
+}
+@media (max-width: 860px) {
+  .hero__scrim {
+    background:
+      linear-gradient(180deg, rgba(20, 23, 26, .92) 0%, rgba(20, 23, 26, .88) 55%,
+                      rgba(20, 23, 26, .55) 100%);
+  }
+}
+.hero .wrap { position: relative; z-index: 2; }
+
+/* ---------- liquid glass surfaces ---------- */
+
+.header {
+  background: rgba(20, 23, 26, .88);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  transition: background .35s ease, box-shadow .35s ease;
+}
+/* Progressive upgrade: dropped wholesale by engines that cannot parse it,
+   leaving the declaration above in force. */
+.header {
+  backdrop-filter: blur(14px) saturate(160%) url(#eh-glass-bar);
+}
+.header.is-stuck {
+  background: rgba(16, 19, 21, .92);
+  box-shadow: 0 1px 0 rgba(143, 220, 60, .22), 0 12px 40px rgba(0, 0, 0, .45);
+}
+/* A specular sheen travelling the top edge, as light does on a glass lip. */
+.header::after {
+  content: ""; position: absolute; inset: 0 0 auto; height: 1px;
+  background: linear-gradient(90deg, transparent,
+              rgba(143, 220, 60, .55) 20%, rgba(255, 255, 255, .45) 50%,
+              rgba(143, 220, 60, .55) 80%, transparent);
+  opacity: .5;
+}
+
+/* Glass panels on dark sections, where the effect actually reads. */
+.section--ink { position: relative; overflow: hidden; }
+.section--ink::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 120% at 88% 10%, rgba(143, 220, 60, .16), transparent 62%),
+    radial-gradient(50% 100% at 6% 96%, rgba(143, 220, 60, .09), transparent 60%);
+}
+.section--ink > .wrap { position: relative; z-index: 1; }
+
+.glass {
+  position: relative;
+  background: linear-gradient(150deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .03));
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 18px 50px rgba(0, 0, 0, .35);
+}
+.glass { backdrop-filter: blur(16px) saturate(160%) url(#eh-glass-card); }
+
+/* ---------- pointer-tracked highlight ---------- */
+
+.card, .plan, .callout { position: relative; }
+.card::after, .plan::after, .glass::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; opacity: 0; transition: opacity .35s ease;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 0%),
+              rgba(143, 220, 60, .16), transparent 62%);
+}
+.card:hover::after, .plan:hover::after, .glass:hover::after { opacity: 1; }
+.section--ink .card::after, .glass::after {
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%),
+              rgba(255, 255, 255, .14), transparent 60%);
+}
+
+.card--link {
+  transition: border-color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1),
+              box-shadow .35s ease;
+}
+.card--link:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+/* Refractive rim that brightens on approach. */
+.card--link::before, .plan--featured::before {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit;
+  pointer-events: none; opacity: 0; transition: opacity .35s ease;
+  background: linear-gradient(140deg, rgba(143, 220, 60, .7), transparent 40%,
+              transparent 62%, rgba(143, 220, 60, .45));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding: 1px;
+}
+.card--link:hover::before, .plan--featured::before { opacity: 1; }
+
+/* ---------- scroll reveals ---------- */
+
+.js-motion .reveal {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity .8s cubic-bezier(.22, 1, .36, 1),
+              transform .8s cubic-bezier(.22, 1, .36, 1);
+  will-change: opacity, transform;
+}
+.js-motion .reveal.is-in { opacity: 1; transform: none; will-change: auto; }
+
+/* The motion layer never hides anything without JavaScript, and reduced
+   motion opts out before a single element is marked. */
+@media (prefers-reduced-motion: reduce) {
+  .js-motion .reveal { opacity: 1; transform: none; transition: none; }
+  .hero__canvas canvas { transition: none; }
+  .card--link:hover { transform: none; }
+}
+
+/* The shader draws the hexagon motif now, so the CSS stand-in stands down. */
+.hero::after { content: none; }
+
+/* =========================================================================
+   Numbered section architecture, figures, steps and the yard
+   ========================================================================= */
+
+.sechead {
+  display: flex; align-items: flex-start; gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+.sechead__no {
+  font-family: var(--display); font-size: clamp(2.6rem, 2rem + 2.4vw, 4rem);
+  line-height: .8; color: var(--lime-dark); flex: none;
+  border-bottom: 3px solid var(--lime); padding-bottom: .1em;
+}
+.section--ink .sechead__no { color: var(--lime); }
+.sechead h2 { margin-bottom: 0; }
+.sechead .eyebrow { margin-bottom: .35rem; }
+.sechead__more { margin-top: 2rem; font-weight: 700; }
+
+/* Structured data storytelling: label above, figure below. */
+.figures { margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius-lg); overflow: hidden; }
+.figures > div { background: var(--ink); padding: 1.4rem 1.25rem; }
+.figures dt { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-invert-soft); margin-bottom: .3rem; }
+.figures dd { margin: 0; font-family: var(--display); font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  line-height: .9; color: var(--lime); }
+.figures--light { background: var(--line); border-color: var(--line); }
+.figures--light > div { background: var(--surface); }
+.figures--light dt { color: var(--text-soft); }
+.figures--light dd { color: var(--ink); }
+
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2rem; }
+.steps li { counter-increment: step; border-top: 2px solid var(--line); padding-top: 1rem; }
+.steps li::before { content: counter(step, decimal-leading-zero);
+  font-family: var(--display); font-size: 1.6rem; color: var(--lime-dark); display: block;
+  line-height: 1; margin-bottom: .4rem; }
+.section--ink .steps li { border-top-color: rgba(255, 255, 255, .18); }
+.section--ink .steps li::before { color: var(--lime); }
+.steps h3 { margin-bottom: .3rem; }
+.steps p { color: var(--text-soft); font-size: .95rem; }
+.section--ink .steps p { color: var(--text-invert-soft); }
+
+/* ---------- the yard ---------- */
+
+.yard__intro { max-width: 46em; color: var(--text-invert-soft); }
+.yard__stage { position: relative; margin: 2rem 0 1rem; border-radius: var(--radius-lg);
+  overflow: hidden; border: 1px solid rgba(143, 220, 60, .28);
+  background: linear-gradient(180deg, rgba(143, 220, 60, .05), rgba(20, 23, 26, .6)); }
+#yard { display: block; width: 100%; height: clamp(250px, 28vw, 370px); }
+#yard:focus-visible { outline: 3px solid var(--lime); outline-offset: -3px; }
+.yard__start { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.yard__bar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+  justify-content: space-between; }
+.yard__btns { display: flex; gap: .6rem; flex-wrap: wrap; }
+.btn--sm { padding: .55rem .9rem; font-size: .88rem; }
+.yard__keys { color: var(--text-invert-soft); font-size: .88rem; margin: 0; }
+kbd { font: inherit; font-size: .82em; background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .2); border-bottom-width: 2px;
+  border-radius: 4px; padding: .1em .45em; margin: 0 .1em; color: var(--paper); }
+.yard__note { margin-top: 1.25rem; font-size: .92rem; color: var(--text-invert-soft);
+  max-width: 46em; }
+.yard.is-playing .yard__stage { border-color: rgba(143, 220, 60, .6); }
+
+/* Hero type: Amatic wants air around it at display sizes. */
+.hero h1 { margin-bottom: .25em; }
+.hero__lede { margin-top: 0; }
+.eyebrow { font-family: var(--sans); }
+.sechead__no, .figures dd, .steps li::before { font-weight: 700; }
+
+/* Utility classes set display, which outranks the user agent's [hidden] rule.
+   Without this the Start button stays on screen after the yard begins. */
+[hidden] { display: none !important; }

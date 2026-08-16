@@ -4,8 +4,13 @@ Static marketing site for **Ecoheat Plumbing and Renewables Limited** (company
 number 15532701, Gas Safe register 952210), covering Somerset and North
 Somerset.
 
-No framework, no build dependencies beyond Python 3, no JavaScript required to
-read or navigate the site. 20 pages, ~60 KB of CSS and JS combined.
+No framework, no build dependencies beyond Python 3, no external requests, and
+no JavaScript required to read or navigate the site. 20 pages.
+
+The interactive layer — a WebGL particle network in the hero, liquid-glass
+surfaces that genuinely refract, and a drivable rigid-body yard with synthesised
+spatial audio — is written from scratch and sits entirely on top of a site that
+works without it.
 
 ---
 
@@ -38,6 +43,29 @@ The build fails, and CI with it, on any of:
 - a broken internal link
 
 ---
+
+## The interactive layer
+
+| File | What it is |
+| --- | --- |
+| `assets/js/particles.js` | Hero particle network. WebGL2, nodes advected by a flow field, neighbour links fading with distance, pointer repulsion. Two draw calls. |
+| `assets/js/physics.js` | "The yard". A 2D rigid-body engine written for this page — semi-implicit Euler under gravity, circle/circle, circle/box and SAT box/box contacts, sequential impulses with restitution and Coulomb friction, Baumgarte position correction, fixed 120 Hz timestep. Drive the van, click to blast. |
+| `assets/js/audio.js` | Web Audio. An ambient drone (three detuned oscillators under an LFO-swept lowpass) plus impact and boost cues, synthesised live — no audio files. Impacts are panned by where they landed and voiced by how hard. |
+| `assets/js/motion.js` | Scroll reveals, scroll progress rail, pointer-tracked highlights, magnetic buttons, count-up figures. |
+| `assets/js/site.js` | Contact form enhancement only. |
+| `tools/make_glass_maps.py` | Bakes the displacement maps behind the glass refraction. |
+
+Every one of them is opt-out by construction:
+
+- **No WebGL** → the hero is its CSS gradient.
+- **No JavaScript** → the yard section never appears (it ships `hidden` and the
+  script unhides it), nothing is ever hidden by a reveal, and the menu and FAQ
+  still work because they are `<details>` elements.
+- **`prefers-reduced-motion`** → the motion layer returns before marking a single
+  element, particles render one settled frame, and the yard shows a still of the
+  stack at rest with no Start button.
+- **Audio** never initialises until the visitor presses the sound button, which
+  is also what browsers require.
 
 ## Structure
 
@@ -90,7 +118,7 @@ statement and a regulatory one.
 
 - If EcoHeat now holds its own certificate: set `MCS_STATUS = "own"` and
   `MCS_NUMBER = "NAP-…"`, then rebuild. Every page updates, including a
-  verifiable certificate number in the trust bar.
+  verifiable certificate number in the FAQ and on the grants page.
 - If there is no partner arrangement in place: say so, and the heat pump and
   grants pages need rewriting before publication rather than adjusting.
 
@@ -204,7 +232,8 @@ live domain before submitting anything to a search engine.
 ## Accessibility
 
 Audited with axe-core (WCAG 2.1 A and AA) across all 16 content pages:
-**zero violations**. Also verified in-browser:
+**zero violations**, with the interactive layer running. Also verified
+in-browser:
 
 - The site is fully navigable with JavaScript disabled — the menu and the FAQ
   are `<details>` disclosures, not scripted widgets.
@@ -215,6 +244,9 @@ Audited with axe-core (WCAG 2.1 A and AA) across all 16 content pages:
   honoured.
 - Every image has descriptive alt text; the photo placeholders carry the alt
   text their eventual photograph will use.
+- The yard canvas has a descriptive label, is keyboard-drivable once started,
+  announces state through a live region, and releases the arrow keys back to
+  the page whenever it does not have focus.
 
 ---
 
@@ -235,7 +267,16 @@ Point the document root at the repository root and enable HTTPS.
 
 ## Brand
 
-Colours are sampled from the supplied logo rather than chosen independently:
+**Type.** Amatic SC carries all display type, Nunito everything else, both
+self-hosted from `assets/fonts/` as latin-subset woff2 (~66 KB together).
+Nunito is the variable file, so one download covers every weight. Nothing is
+requested from Google, which keeps the site free of third-party requests and
+keeps the cookie policy honest.
+
+Amatic is a narrow, light, hand-drawn face: it is set far larger and with far
+less negative tracking than a grotesque would be, or it disappears on the page.
+
+**Colour.** Sampled from the supplied logo rather than chosen independently:
 charcoal `#141414`–`#222222` with lime `#9FEC5A`.
 
 | Token | Value | Use |

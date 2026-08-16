@@ -56,6 +56,7 @@ _ICON_BODY = {
     "star": '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.3-6.2 3.3L7 14.2l-5-4.9 6.9-1Z"/>',
     "doc": '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 15h6M9 11h2"/>',
     "menu": '<path d="M3 6h18M3 12h18M3 18h18"/>',
+    "sound": '<path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>',
     "chat": '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-.9L3 21l1.9-4.6A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"/>',
     "users": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/>',
 }
@@ -91,15 +92,10 @@ EXTRA_LINKS = {
 }
 
 NAV = [
-    ("Services", "services/", [(s["nav"], "services/%s/" % s["slug"])
-                               for s in C.SERVICES]),
-    ("Grants", "grants/", []),
-    ("Finance", "finance/", []),
-    ("Projects", "projects/", []),
-    ("About", "about/", [("About EcoHeat", "about/"),
-                         ("Areas we cover", "areas-we-cover/"),
-                         ("Reviews", "reviews/")]),
-    ("FAQs", "faq/", []),
+    ("Services", "services/", [(x["nav"], "services/%s/" % x["slug"])
+                               for x in C.SERVICES]),
+    ("Renewables", "grants/", []),
+    ("Work", "projects/", []),
     ("Contact", "contact/", []),
 ]
 
@@ -119,26 +115,6 @@ def tel_link(cls: str = "", label: str | None = None) -> str:
         i=icon("phone"),
         l=e(label or C.BUSINESS["phone"]),
     )
-
-
-def topbar(r: str) -> str:
-    creds = [
-        ("shield", "Gas Safe registered", C.BUSINESS["gas_safe_number"]),
-        ("doc", "Company no.", C.BUSINESS["company_number"]),
-        ("pin", "Somerset & North Somerset", ""),
-    ]
-    items = "".join(
-        '<span class="topbar__cred">{i}<span>{a}{b}</span></span>'.format(
-            i=icon(k), a=e(a), b=(" " + e(b)) if b else "")
-        for k, a, b in creds
-    )
-    return (
-        '<div class="topbar"><div class="wrap">'
-        '<div class="topbar__creds">{items}</div>'
-        '<div><a href="tel:{tel}">Call {phone}</a></div>'
-        "</div></div>"
-    ).format(items=items, tel=C.BUSINESS["phone_e164"],
-             phone=e(C.BUSINESS["phone"]))
 
 
 def header(r: str, current: str) -> str:
@@ -249,13 +225,31 @@ def footer(r: str) -> str:
     )
 
 
-def callbar(r: str) -> str:
+def glass_defs(r: str) -> str:
+    """Inline SVG filters that give the glass surfaces genuine refraction.
+
+    Each one displaces the backdrop per pixel using a pre-baked map whose red
+    and green channels encode the offset (see tools/make_glass_maps.py), so
+    content behind a glass panel bends at the rim instead of merely blurring.
+    Referenced from CSS as `backdrop-filter: ... url(#eh-glass-bar)`.
+    """
+    def one(name, image, scale):
+        return (
+            '<filter id="eh-glass-{n}" filterUnits="objectBoundingBox" '
+            'primitiveUnits="objectBoundingBox" x="0" y="0" width="1" '
+            'height="1" color-interpolation-filters="sRGB">'
+            '<feImage href="{r}assets/img/{img}" x="0" y="0" width="1" '
+            'height="1" preserveAspectRatio="none" result="map"/>'
+            '<feDisplacementMap in="SourceGraphic" in2="map" scale="{s}" '
+            'xChannelSelector="R" yChannelSelector="G"/>'
+            "</filter>"
+        ).format(n=name, r=r, img=image, s=scale)
+
     return (
-        '<div class="callbar">'
-        '<a href="tel:{tel}">{p}Call now</a>'
-        '<a href="{r}contact/">{m}Get a quote</a>'
-        "</div>"
-    ).format(tel=C.BUSINESS["phone_e164"], p=icon("phone"), m=icon("mail"), r=r)
+        '<svg class="visually-hidden" aria-hidden="true" focusable="false" '
+        'width="0" height="0"><defs>{bar}{card}</defs></svg>'
+    ).format(bar=one("bar", "glass-bar.png", "0.045"),
+             card=one("card", "glass-card.png", "0.06"))
 
 
 def crumbs(r: str, trail: list[tuple[str, str]]) -> str:
@@ -470,22 +464,26 @@ def page(path, title, meta, body, trail=None, schema=None, priority="0.6",
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
-{topbar}
+{defs}
+<div class="progress" aria-hidden="true"><div class="progress__bar"></div></div>
 {header}
 <main id="main">
 {crumbs}
 {body}
 </main>
 {footer}
-{callbar}
 <script src="{r}assets/js/site.js" defer></script>
-</body>
+<script src="{r}assets/js/motion.js" defer></script>
+{gl}</body>
 </html>
 """.format(
+        defs=glass_defs(r),
+        gl=("".join('<script src="%sassets/js/%s" defer></script>\n' % (r, f)
+                    for f in ("particles.js", "audio.js", "physics.js"))
+            if path == "index.html" else ""),
         title=e(title), meta=e(meta), canonical=canonical, name=e(C.BUSINESS["name"]),
-        site=C.SITE_URL, r=r, ld=ld, topbar=topbar(r), header=header(r, current),
+        site=C.SITE_URL, r=r, ld=ld, header=header(r, current),
         crumbs=crumbs(r, trail or []), body=body, footer=footer(r),
-        callbar=callbar(r),
         robots='<meta name="robots" content="noindex, follow">\n' if noindex else "",
     )
 
@@ -501,151 +499,158 @@ def page(path, title, meta, body, trail=None, schema=None, priority="0.6",
 
 def build_home():
     r = ""
+
+    # Three services on the home page, not six. The rest are one click away.
+    lead = ["boiler-installation", "air-source-heat-pumps",
+            "plumbing-and-bathrooms"]
     cards = "".join(
         '<a class="card card--link" href="services/{s}/">'
         '<div class="card__icon">{i}</div><h3>{n}</h3><p>{d}</p>'
         '<span class="card__more">Read more</span></a>'.format(
-            s=s["slug"], i=icon(s["icon"]), n=e(s["nav"]), d=e(s["summary"]))
-        for s in C.SERVICES
+            s=x["slug"], i=icon(x["icon"]), n=e(x["nav"]), d=e(x["summary"]))
+        for x in (SERVICE_BY_SLUG[k] for k in lead)
     )
 
     body = """
-<section class="hero"><div class="wrap"><div class="hero__inner">
-<span class="eyebrow">Gas Safe registered · Somerset &amp; North Somerset</span>
-<h1>Plumbing, heating and <em>renewables</em> across Somerset</h1>
-<p class="hero__lede">Boilers, air source heat pumps, bathrooms and emergency
-call-outs from Weston-super-Mare to Taunton. Fixed prices in writing, and the
-engineer who quotes the job is the engineer who does it.</p>
+<section class="hero">
+<div class="hero__canvas" aria-hidden="true"><canvas id="hero-gl"></canvas></div>
+<div class="hero__scrim" aria-hidden="true"></div>
+<div class="wrap"><div class="hero__inner">
+<span class="eyebrow">Gas Safe registered &middot; Somerset</span>
+<h1>Warm homes,<br>done properly</h1>
+<p class="hero__lede">Boilers, air source heat pumps and bathrooms across
+Somerset and North Somerset. Fixed prices in writing, and the engineer who
+quotes the job is the engineer who does it.</p>
 <div class="btn-row">
-<a class="btn btn--primary" href="tel:{tel}">{ph}Call {phone}</a>
-<a class="btn btn--on-dark" href="contact/">Book a free survey</a>
+<a class="btn btn--primary" href="contact/">Book a free survey</a>
+<a class="btn btn--on-dark" href="tel:{tel}">{ph}{phone}</a>
 </div>
-<ul class="hero__points">
-<li>{ck}<span>Free, no-obligation surveys and written fixed-price quotes</span></li>
-<li>{ck}<span>{grant} Boiler Upgrade Scheme grant handled for you</span></li>
-<li>{ck}<span>No salespeople — you deal with the engineer throughout</span></li>
-</ul>
-</div></div></section>
+</div></div>
+</section>
 
-<div class="trustbar"><div class="wrap"><ul>
-<li>{sh}<div>Gas Safe registered<span>Register number {gs}</span></div></li>
-<li>{fl}<div>{mcs_short}<span>{mcs_sub}</span></div></li>
-<li>{dc}<div>Fully insured<span>Public liability cover in place</span></div></li>
-<li>{pn}<div>Local and independent<span>Based at Edingworth, {town}</span></div></li>
-</ul></div></div>
-
-<section class="section"><div class="wrap">
-<span class="eyebrow">What we do</span>
-<h2>Services</h2>
-<p class="pagehead-lede" style="max-width:44em;color:var(--text-soft)">From a
-dripping tap to a full heat pump conversion — one local team, one point of
-contact, and no job sub-contracted out without telling you first.</p>
-<div class="grid grid-3" style="margin-top:2rem">{cards}</div>
+<section class="section" id="what-we-do"><div class="wrap">
+<div class="sechead">
+<span class="sechead__no">01</span>
+<div><span class="eyebrow">What we do</span><h2>Three things, done well</h2></div>
+</div>
+<div class="grid grid-3">{cards}</div>
+<p class="sechead__more"><a href="services/">Every service we offer</a></p>
 </div></section>
 
-<section class="section section--surface"><div class="wrap">
-<div class="grid grid-2" style="gap:3rem;align-items:center">
+<section class="section section--ink" id="renewables"><div class="wrap">
+<div class="sechead">
+<span class="sechead__no">02</span>
+<div><span class="eyebrow">Renewables</span>
+<h2>The grant pays {grant}. We do the paperwork.</h2></div>
+</div>
+<div class="grid grid-2" style="gap:3rem;align-items:start">
 <div>
-<span class="eyebrow">Renewables</span>
-<h2>Thinking about a heat pump?</h2>
-<p>The Boiler Upgrade Scheme pays <strong>{grant}</strong> towards an air source
-heat pump on eligible properties, and we apply for it on your behalf so it comes
-straight off your quote — you never fund it yourself and claim it back.</p>
-<p>{mcs_line}</p>
+<p>The Boiler Upgrade Scheme pays {grant} towards an air source heat pump on
+eligible properties. We apply on your behalf and take it straight off your
+quote &mdash; you never fund it yourself and claim it back.</p>
 <p>Everything starts with a room-by-room heat loss survey, because that is what
-determines whether a heat pump will actually heat your home cheaply. We give you
-those numbers before you commit to anything, free of charge.</p>
-<div class="btn-row">
-<a class="btn btn--primary" href="services/air-source-heat-pumps/">Heat pump installation</a>
-<a class="btn btn--ghost" href="grants/">How the grant works</a>
+decides whether a heat pump will heat your home cheaply. Free, and yours to keep
+either way.</p>
+<div class="btn-row" style="margin-top:1.5rem">
+<a class="btn btn--primary" href="grants/">How the grant works</a>
+<a class="btn btn--on-dark" href="services/air-source-heat-pumps/">Heat pumps</a>
 </div>
 </div>
-<div>{pic}</div>
+<dl class="figures">
+<div><dt>Grant available</dt><dd data-count="7500" data-prefix="£">{grant}</dd></div>
+<div><dt>Survey cost</dt><dd>Free</dd></div>
+<div><dt>Typical flow temp we design to</dt><dd>45&deg;C</dd></div>
+<div><dt>VAT on heat pumps</dt><dd>0%</dd></div>
+</dl>
 </div>
 </div></section>
 
-<section class="section"><div class="wrap">
-<div class="grid grid-2" style="gap:3rem">
+<section class="section" id="how-we-work"><div class="wrap">
+<div class="sechead">
+<span class="sechead__no">03</span>
+<div><span class="eyebrow">How we work</span><h2>No salespeople. Ever.</h2></div>
+</div>
+<ol class="steps">
+<li><h3>You speak to an engineer</h3><p>Not a call centre. You get a straight
+answer about whether it is something we do and what is involved.</p></li>
+<li><h3>We survey, free of charge</h3><p>Heat loss room by room for heat pumps,
+gas rate and system condition for boilers. Measured, not guessed.</p></li>
+<li><h3>One fixed written price</h3><p>Itemised, valid 30 days, with any grant
+already deducted. Extras only ever with your agreement first.</p></li>
+<li><h3>The same engineer fits it</h3><p>On the agreed dates, property
+protected, cleared up each day, commissioned and handed over before we
+invoice.</p></li>
+</ol>
+</div></section>
+
+<section class="section section--ink yard" id="the-yard" hidden><div class="wrap">
+<div class="sechead">
+<span class="sechead__no">04</span>
+<div><span class="eyebrow">The yard</span><h2>Have a drive around</h2></div>
+</div>
+<p class="yard__intro">Our stock, our van, and a physics engine written for this
+page. Drive with the arrow keys, hop with up, hold shift to boost, and click
+anywhere to send it all flying.</p>
+<div class="yard__stage">
+<canvas id="yard" width="1200" height="440" role="img"
+ aria-label="An illustration of the EcoHeat yard: a branded van beside a stack
+ of cylinders, radiators, boilers and heat pump units resting on the ground.
+ Interactive when started."></canvas>
+<button class="yard__start btn btn--primary" type="button" data-yard-start>
+Start the yard</button>
+</div>
+<div class="yard__bar">
+<p class="yard__keys"><kbd>&larr;</kbd><kbd>&rarr;</kbd> drive
+&middot; <kbd>&uarr;</kbd> hop &middot; <kbd>shift</kbd> boost
+&middot; <kbd>esc</kbd> stop</p>
+<div class="yard__btns">
+<button class="btn btn--on-dark btn--sm" type="button" data-yard-sound
+ aria-pressed="false">{spk}<span data-label>Sound off</span></button>
+<button class="btn btn--on-dark btn--sm" type="button" data-yard-reset>
+Reset</button>
+</div>
+</div>
+<p class="visually-hidden" role="status" data-yard-live></p>
+<p class="yard__note">A toy, but an honest one: every crate has a mass, so the
+heavy stock barely moves and the light stock goes flying. Same arithmetic we use
+to size a heat pump &mdash; just with worse consequences.</p>
+</div></section>
+
+<section class="section" id="contact"><div class="wrap">
+<div class="sechead">
+<span class="sechead__no">05</span>
+<div><span class="eyebrow">Get in touch</span><h2>Tell us what you need</h2></div>
+</div>
+<div class="grid grid-2" style="gap:3rem;align-items:start">
 <div>
-<span class="eyebrow">Why EcoHeat</span>
-<h2>Straight answers, fixed prices</h2>
-<p>EcoHeat is a small, independent Somerset firm. That is the whole proposition:
-you speak to the person doing the work, the price you are quoted is the price you
-pay, and nobody is on commission to sell you a boiler you do not need.</p>
-{why}
-<p style="margin-top:1.5rem"><a href="about/">More about how we work</a></p>
-</div>
-<div>
-<span class="eyebrow">Where we work</span>
-<h2>Areas we cover</h2>
-<p>Based at Edingworth, between Weston-super-Mare and Burnham-on-Sea, covering
-Somerset and North Somerset:</p>
-<ul class="areas-list">{areas}</ul>
-<p style="margin-top:1.25rem"><a href="areas-we-cover/">Full list of areas covered</a></p>
+<p>Free surveys and fixed written quotes across Somerset and North Somerset.
+No pressure, no obligation, no charge.</p>
+<div class="btn-row" style="margin-top:1.5rem">
+<a class="btn btn--primary" href="contact/">Request a survey</a>
+<a class="btn btn--ghost" href="tel:{tel}">{ph}{phone}</a>
 </div>
 </div>
-</div></section>
-
-<section class="section section--surface"><div class="wrap">
-<span class="eyebrow">Recent work</span>
-<h2>Projects and case studies</h2>
-<p style="max-width:44em;color:var(--text-soft)">Real installations across
-Somerset, with the problem, the fix and the outcome set out in full.</p>
-<div class="grid grid-3" style="margin-top:2rem">{studies}</div>
-<p style="margin-top:2rem"><a class="btn btn--ghost" href="projects/">See all projects</a></p>
-</div></section>
-
-<section class="section"><div class="wrap narrow">
-<span class="eyebrow">Common questions</span>
-<h2>Frequently asked</h2>
-{faqs}
-<p style="margin-top:1.5rem"><a href="faq/">All frequently asked questions</a></p>
+<dl class="figures figures--light">
+<div><dt>Gas Safe register</dt><dd>{gs}</dd></div>
+<div><dt>Based at</dt><dd>Edingworth</dd></div>
+<div><dt>Company number</dt><dd>{cno}</dd></div>
+<div><dt>Quotes valid for</dt><dd>30 days</dd></div>
+</dl>
+</div>
 </div></section>
 """.format(
         tel=C.BUSINESS["phone_e164"], ph=icon("phone"),
-        phone=e(C.BUSINESS["phone"]), ck=icon("check"), grant=C.BUS_GRANT,
-        sh=icon("shield"), fl=icon("flame"), dc=icon("doc"), pn=icon("pin"),
-        gs=e(C.BUSINESS["gas_safe_number"]), town=e(C.BUSINESS["town"]),
-        mcs_short="MCS-accredited heat pumps" if C.MCS_STATUS == "partner"
-                  else "MCS certified",
-        mcs_sub=e("Installed with our accredited partner"
-                  if C.MCS_STATUS == "partner"
-                  else "Certificate " + C.MCS_NUMBER),
-        mcs_line=e(C.MCS_ANSWER),
-        cards=cards,
-        pic=photo(r, "heat-pump-hero.jpg",
-                  "EcoHeat engineer commissioning an air source heat pump at a "
-                  "Somerset property"),
-        why=ticks([
-            "Free surveys and written fixed-price quotes",
-            "Gas Safe registered, register number " + C.BUSINESS["gas_safe_number"],
-            "The engineer who quotes is the engineer who fits",
-            "Deposit covers materials; the balance is due only on completion",
-            "Finance available on qualifying installations",
-        ]),
-        areas="".join("<li>%s</li>" % e(a) for a in C.AREAS[:12]),
-        studies="".join(
-            '<a class="card card--link" href="projects/#{s}">'
-            '<div class="card__icon">{i}</div>'
-            "<h3>{t}</h3><p>{d}</p>"
-            '<span class="card__more">Read the case study</span></a>'.format(
-                s=cs["slug"], i=icon("boiler"), t=e(cs["type"]),
-                d=e(cs["summary"]))
-            for cs in C.CASE_STUDIES),
-        faqs=faq_block(["heat-pump-grant", "fixed-price", "areas",
-                        "emergency-hours"]),
+        phone=e(C.BUSINESS["phone"]), cards=cards, grant=C.BUS_GRANT,
+        gs=e(C.BUSINESS["gas_safe_number"]),
+        cno=e(C.BUSINESS["company_number"]),
+        spk=icon("sound"),
     )
-
-    body += cta_band(
-        r, "Get a free, no-obligation quote",
-        "Tell us what you need and we will arrange a survey at a time that "
-        "suits you. No pressure, no salespeople, no charge.")
 
     page("index.html",
          "Plumbing, Heating & Heat Pumps in Somerset | EcoHeat",
          "Gas Safe registered plumbing, heating and air source heat pumps "
-         "across Somerset and North Somerset. Free surveys, fixed prices and the "
-         "{} heat pump grant handled for you.".format(C.BUS_GRANT),
+         "across Somerset and North Somerset. Free surveys, fixed prices and "
+         "the {} heat pump grant handled for you.".format(C.BUS_GRANT),
          body, priority="1.0", changefreq="weekly")
 
 
@@ -672,36 +677,11 @@ registered engineers and quoted at a fixed price before we start.</p>
 <div class="grid grid-3" style="margin-top:1.5rem">{cards}</div>
 </div></section>
 
-<section class="section section--surface"><div class="wrap">
-<div class="grid grid-2" style="gap:3rem">
-<div>
-<h2>How a job works with us</h2>
-<ol style="padding-left:1.2rem">
-<li><strong>You call or send an enquiry.</strong> You speak to an engineer, not
-a call centre, and you get a straight answer about whether it is something we
-do and roughly what is involved.</li>
-<li><strong>We survey, free of charge.</strong> For installations we measure
-properly — heat loss room by room for heat pumps, gas rate and system condition
-for boilers.</li>
-<li><strong>You get a fixed written quote.</strong> Itemised, with the grant or
-finance already applied, and valid for 30 days.</li>
-<li><strong>We do the work.</strong> The same engineer, on the agreed dates,
-with the property protected and cleared up at the end of each day.</li>
-<li><strong>We commission and hand over.</strong> Certificates, warranty
-registration, Building Regulations notification and a walk-through of the
-controls before we invoice.</li>
-</ol>
-</div>
-<div>
+<section class="section section--surface"><div class="wrap narrow">
 <h2>What is always included</h2>
 {inc}
-<div class="callout"><h3>Not sure what you need?</h3>
-<p>Ring {phone} and describe the problem. If it is something we cannot help
-with, we will tell you who can.</p></div>
-</div>
-</div>
 </div></section>
-""".format(cards=cards, phone=e(C.BUSINESS["phone"]),
+""".format(cards=cards,
            inc=ticks([
                "A free survey before any installation quote",
                "A fixed written price, itemised, valid 30 days",
@@ -1238,7 +1218,7 @@ stop, explain it and re-quote rather than adding it to the invoice.</p>
 <div class="stats" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem">
 <div class="stat"><b>2024</b><span>Incorporated in Somerset</span></div>
 <div class="stat"><b>{gs}</b><span>Gas Safe register number</span></div>
-<div class="stat"><b>{grant}</b><span>Heat pump grant handled for you</span></div>
+<div class="stat"><b data-count="7500" data-prefix="£">{grant}</b><span>Heat pump grant handled for you</span></div>
 <div class="stat"><b>Free</b><span>Surveys and quotations</span></div>
 </div>
 {van}
