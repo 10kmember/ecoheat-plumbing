@@ -1,0 +1,11 @@
+# EcoHeat Plumbing and Renewables
+# Somerset & North Somerset plumbing, heating and renewables.
+
+User-agent: *
+Allow: /
+
+# Query strings on the contact form pre-select a subject; they are not
+# separate pages and should not be indexed as duplicates.
+Disallow: /contact/?
+
+Sitemap: https://www.ecoheatplumbingandrenewables.co.uk/sitemap.xml

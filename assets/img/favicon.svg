@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img"
+     aria-label="EcoHeat">
+  <rect width="64" height="64" rx="12" fill="#14171a"/>
+  <path d="M8 24 32 10l24 14" fill="none" stroke="#8fdc3c" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 40 32 54l24-14" fill="none" stroke="#8fdc3c" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 20c4.6 3.6 7.4 7.4 7.4 11.6C39.4 37 36.1 40 32 40s-7.4-3-7.4-8.4
+           c0-2.6 1.2-4.8 2.9-6.6.2 1.7 1 3 2.2 3.6-.4-3.3.6-6.2 2.3-8.6Z"
+        fill="#8fdc3c"/>
+</svg>

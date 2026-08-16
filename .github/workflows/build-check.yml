@@ -1,0 +1,21 @@
+name: Build check
+
+on:
+  push:
+    branches: [claude/ecoheat-plumbing-website-048klo]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Rebuilds into a temp directory and fails if the committed HTML differs,
+      # so the generated site can never drift from src/content.py. Also fails
+      # on a duplicate title or meta description, a missing or duplicated <h1>,
+      # a skipped heading level, or a broken internal link.
+      - run: python3 build.py --check
